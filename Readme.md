@@ -33,11 +33,15 @@ The system is designed so that **PDF upload is optional**. Users can learn norma
 ## Project Structure
 
 AI Agent/
-│
+
 ├── agent_backend.py # Backend logic (LLM, memory, optional RAG)
+
 ├── app.py # Streamlit frontend
+
 ├── requirements.txt # Project dependencies
+
 ├── README.md # Project documentation
+
 └── .gitignore # Ignored files and folders
 
 
@@ -69,39 +73,38 @@ pip install -r requirements.txt
 streamlit run app.py
 
 
-How to Use the Application
+## How to Use the Application
 
-Open the Streamlit app in your browser
+  - Open the Streamlit app in your browser
 
-Enter a question to learn a concept
+  - Enter a question to learn a concept
 
-Choose LEARN mode for explanations or NOTES mode for short notes
+  - Choose LEARN mode for explanations or NOTES mode for short notes
 
-Upload a PDF (optional) to enable document-based learning
+  - Upload a PDF (optional) to enable document-based learning
 
-Remove the PDF anytime to return to normal learning
+  - Remove the PDF anytime to return to normal learning
 
-Limitations
+## Limitations
 
-PDF embeddings are generated locally to avoid API quota limits
+  - PDF embeddings are generated locally to avoid API quota limits
 
-Performance depends on CPU when processing large PDF files
+  - Performance depends on CPU when processing large PDF files
 
-Academic Note
+## Academic Note
 
-This project is developed for educational purposes to demonstrate:
+  - This project is developed for educational purposes to demonstrate:
 
-Large Language Model (LLM) integration
+  - Large Language Model (LLM) integration
 
-Prompt engineering
+  - Prompt engineering
 
-Conversation memory
+  - Conversation memory
 
-Retrieval-Augmented Generation (RAG)
+  - Retrieval-Augmented Generation (RAG)
 
-Clean backend–frontend separation
+  - Clean backend–frontend separation
 
-
-Author
+## Author
 
 Aniket Yadav
