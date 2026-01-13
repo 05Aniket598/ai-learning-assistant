@@ -1,0 +1,10 @@
+langchain==0.0.353
+langchain-google-genai==0.0.11
+google-auth==2.43.0
+
+pypdf==4.0.1
+faiss-cpu==1.11.0
+sentence-transformers==2.2.2
+
+torch>=1.13.0
+numpy>=1.23.0
