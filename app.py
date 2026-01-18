@@ -2,7 +2,6 @@ import streamlit as st
 import tempfile
 
 from agent_backend import (
-    ai_tutor,
     load_pdf_rag,
     chat,
     clear_pdf
@@ -16,12 +15,35 @@ st.set_page_config(
 st.title("📘 AI Learning Assistant")
 
 # -------------------------------------------------
-# SIDEBAR: OPTIONAL PDF UPLOAD
+# SESSION STATE
 # -------------------------------------------------
-st.sidebar.header("Optional: Upload Learning PDF")
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# -------------------------------------------------
+# SIDEBAR: LEARNING SETTINGS
+# -------------------------------------------------
+st.sidebar.header("Learning Settings")
+
+mode = st.sidebar.selectbox(
+    "Mode",
+    ["LEARN", "NOTES"]
+)
+
+level = st.sidebar.selectbox(
+    "Learning Level",
+    ["Beginner", "Intermediate", "Advanced"]
+)
+
+st.sidebar.divider()
+
+# -------------------------------------------------
+# SIDEBAR: PDF UPLOAD
+# -------------------------------------------------
+st.sidebar.header("Optional PDF Upload")
 
 uploaded_file = st.sidebar.file_uploader(
-    "Upload a PDF file (optional)",
+    "Upload a PDF (optional)",
     type=["pdf"]
 )
 
@@ -38,33 +60,38 @@ if st.sidebar.button("Remove PDF"):
     st.sidebar.info("PDF removed. Back to normal learning.")
 
 # -------------------------------------------------
-# MAIN CHAT AREA
+# CHAT HISTORY
 # -------------------------------------------------
-st.subheader("Ask a Question")
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
 
-question = st.text_input("Enter your question")
+# -------------------------------------------------
+# CHAT INPUT
+# -------------------------------------------------
+user_input = st.chat_input("Ask a question...")
 
-mode = st.selectbox(
-    "Select Mode",
-    ["LEARN", "NOTES"]
-)
+if user_input:
+    # Save user message
+    st.session_state.messages.append(
+        {"role": "user", "content": user_input}
+    )
 
-level = st.selectbox(
-    "Learning Level",
-    ["Beginner", "Intermediate", "Advanced"]
-)
+    with st.chat_message("user"):
+        st.markdown(user_input)
 
-if st.button("Get Answer"):
-    if question.strip() == "":
-        st.warning("Please enter a question.")
-    else:
+    backend_input = f"""
+Topic: {user_input}
+Learning Level: {level}
+Mode: {mode}
+"""
+
+    with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
-            user_message = f"""
-            Topic: {question}
-            Learning Level: {level}
-            Mode: {mode}
-            """
-            answer = chat(user_message)
+            response = chat(backend_input)
+            st.markdown(response)
 
-        st.markdown("### Answer")
-        st.write(answer)
+    # Save assistant response
+    st.session_state.messages.append(
+        {"role": "assistant", "content": response}
+    )
